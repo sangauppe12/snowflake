@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Download File from OneDrive
         run: |
-          wget -O "${{ github.event.inputs.file_name }}" "${{ github.event.inputs.file_url }}"
+          wget -O "https://cognizant409983-my.sharepoint.com/:f:/g/personal/vikram_cognizant409983_onmicrosoft_com/EpekblpnXTpElOrGDaHZ2-IBNJTqi438UH3h_tnmywir2w?e=jP32zz"
 
       - name: Set Git Config
         run: |
