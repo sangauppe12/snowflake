@@ -1,13 +1,13 @@
-name: Download, unpack and commit the solution to git
-run-name: Getting ${{ github.event.inputs.solution_name }} from pipelines host environment and committing
+name: Download, unpack, and commit the solution to git
+run-name: Getting ${{ github.event.inputs.solution_name }} from OneDrive and committing
 on:
   workflow_dispatch:
     inputs:
       artifact_url:
-        description: "The url of the Dataverse record ID for the artifact created by the pipelines (Example: https://[your-env].crm.dynamics.com/api/data/v9.0/deploymentartifacts([your-artifact-id])/artifactfile/$value)."
+        description: "The URL of the file stored in OneDrive"
         required: true
       solution_name:
-        description: "Name of the Solution in Dataverse environment"
+        description: "Name of the solution to be downloaded"
         required: true
       user_name: 
         description: "User name for the commit"
@@ -19,7 +19,7 @@ on:
         description: "Branch to create for the solution commit"
         required: false
       commit_message:
-        description: "Message to provide for the commit"
+        description: "Message for the commit"
         required: true
 permissions:
   contents: write
@@ -28,21 +28,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-            ref: ${{ github.event.inputs.source_branch }}
-
-      # Commit changes to the existing or new branch
-      - name: create new branch if specified
-        shell: pwsh
+      - name: Download File from OneDrive
         run: |
-            if('${{ github.event.inputs.target_branch }}' -ne '') {
-                git checkout -b ${{ github.event.inputs.target_branch }} ${{ github.event.inputs.source_branch }}
-            }
+          wget -O "${{ github.event.inputs.solution_name }}.zip" "${{ github.event.inputs.artifact_url }}"
 
-
-      # Unpack the solution
-      - name: unpack solution
+      - name: Unpack solution
         uses: microsoft/powerplatform-actions/unpack-solution@v0
         with:
           solution-file: "${{ github.event.inputs.solution_name }}.zip"
@@ -51,23 +41,19 @@ jobs:
           process-canvas-apps: false
           overwrite-files: true
 
-      # Commit changes to the existing or new branch
-      - name: commit changes
-        shell: pwsh
+      - name: Commit changes
         run: |
           rm -rf ${{ github.event.inputs.solution_name }}.zip
           rm -rf ${{ github.event.inputs.solution_name }}_managed.zip
-          git config user.name ${{ github.event.inputs.user_name }}
+          git config user.name "${{ github.event.inputs.user_name }}"
           git pull 
           git add --all
           git commit -am "${{ github.event.inputs.commit_message }}" --allow-empty
 
-      # Push the committed changes to the source branch
-      - name: push to branch
-        shell: pwsh
+      - name: Push to branch
         run: |
-          if('${{ github.event.inputs.target_branch }}' -ne '') {
+          if [ -n "${{ github.event.inputs.target_branch }}" ]; then
               git push origin ${{ github.event.inputs.target_branch }}
-          } else {
+          else
               git push origin ${{ github.event.inputs.source_branch }}
-          }
+          fi
