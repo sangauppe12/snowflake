@@ -17,6 +17,11 @@ jobs:
       run: |
         wget -O file_from_onedrive.txt "https://cognizant409983-my.sharepoint.com/:f:/g/personal/vikram_cognizant409983_onmicrosoft_com/EpekblpnXTpElOrGDaHZ2-IBNJTqi438UH3h_tnmywir2w?e=jP32zz"
 
+    - name: Set Git Config
+      run: |
+        git config user.email "sangameshwar.bu9386@gmail.com"
+        git config user.name "sangauppe12"
+        
     - name: Push Changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
