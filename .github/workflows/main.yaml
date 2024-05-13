@@ -1,5 +1,5 @@
 name: Download, unpack, and commit the solution to git
-run-name: Getting ${{ github.event.inputs.solution_name }} from OneDrive and committing
+run-name: Getting from OneDrive and committing
 on:
   workflow_dispatch:
     inputs:
