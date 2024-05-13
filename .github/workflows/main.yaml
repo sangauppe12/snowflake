@@ -1,12 +1,9 @@
-name: Download solution from OneDrive
+name: Download solution from OneDrive and commit to GitHub
 on:
   workflow_dispatch:
     inputs:
       artifact_url:
         description: "The URL of the solution file stored in OneDrive"
-        required: true
-      managed_artifact_url: # Add the URL for the Managed solution file
-        description: "The URL of the Managed solution file stored in OneDrive"
         required: true
 
 jobs:
@@ -16,5 +13,24 @@ jobs:
     steps:
       - name: Download Solution Files
         run: |
-          wget -O "SFProj1.zip" "https://cognizant409983-my.sharepoint.com/:u:/g/personal/vikram_cognizant409983_onmicrosoft_com/EYRolV3RHaFAmY73T4piPOMB2qNtSw1NymsV_P-gsuckLQ?e=CEdqqk"
-          wget -O "SFProj1_managed.zip" "${{ github.event.inputs.managed_artifact_url }}"
+          wget -O "SFProj1.zip" "${{ github.event.inputs.artifact_url }}"
+          wget -O "SFProj1_managed.zip" "${{ github.event.inputs.artifact_url }}"
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "sangameshwar.bu9386@gmail.com"
+          git config --global user.name "sangauppe12"
+
+      - name: Add Solution Files to Repository
+        run: |
+          git add SFProj1.zip
+          git add SFProj1_managed.zip
+
+      - name: Commit Changes
+        run: |
+          git commit -m "Add solution files from OneDrive"
+          
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.7.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
