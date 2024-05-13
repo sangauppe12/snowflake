@@ -40,15 +40,6 @@ jobs:
         run: |
           wget -O "${{ github.event.inputs.solution_name }}.zip" "https://cognizant409983-my.sharepoint.com/:f:/g/personal/vikram_cognizant409983_onmicrosoft_com/EpekblpnXTpElOrGDaHZ2-IBNJTqi438UH3h_tnmywir2w?e=4i5G0X"
 
-      - name: Unpack solution
-        uses: microsoft/powerplatform-actions/unpack-solution@v0
-        with:
-          solution-file: "${{ github.event.inputs.solution_name }}.zip"
-          solution-folder: "${{ github.event.repository.name }}"
-          solution-type: 'Both'
-          process-canvas-apps: false
-          overwrite-files: true
-
       - name: Commit changes
         run: |
           rm -rf ${{ github.event.inputs.solution_name }}.zip
