@@ -1,4 +1,3 @@
-
 name: Download, unpack, and commit the solution to git
 run-name: Getting from OneDrive and committing
 on:
