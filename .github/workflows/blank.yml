@@ -20,7 +20,7 @@ jobs:
     - name: Set up Git
       run: |
         git config --global user.email "sangameshwar.bu9386@gmail.com"
-        git config --global user.name "sanga12"
+        git config --global user.name "sangauppe12"
 
     - name: Push Changes
       env:
