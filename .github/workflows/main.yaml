@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Download Solution Files
         run: |
           wget -O "SFProj1.zip" "${{ github.event.inputs.artifact_url }}"
@@ -20,6 +23,9 @@ jobs:
         run: |
           git config --global user.email "sangameshwar.bu9386@gmail.com"
           git config --global user.name "sangauppe12"
+
+      - name: Navigate to Repository Directory
+        run: cd $GITHUB_WORKSPACE
 
       - name: Add Solution Files to Repository
         run: |
