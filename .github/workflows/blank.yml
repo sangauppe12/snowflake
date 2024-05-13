@@ -24,7 +24,7 @@ jobs:
         
     - name: Push Changes
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
+        GITHUB_TOKEN: ${{ secrets.sanga }}
       run: |
         git add file_from_onedrive.txt
         git commit -m "Add file from OneDrive"
